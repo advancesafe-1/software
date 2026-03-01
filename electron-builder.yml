@@ -1,0 +1,51 @@
+appId: com.advancedsos.advancesafe
+productName: AdvanceSafe
+copyright: "Copyright © 2025 Advanced SOS Max"
+
+directories:
+  output: dist-installer
+  buildResources: build
+
+files:
+  - dist-electron/**/*
+  - dist/**/*
+  - package.json
+  - "!**/*.map"
+  - "!**/test/**/*"
+  - "!**/tests/**/*"
+  - "!**/*.test.*"
+  - "!**/*.spec.*"
+
+extraResources:
+  - from: resources/
+    to: resources/
+    filter: ["**/*"]
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.ico
+  requestedExecutionLevel: requireAdministrator
+  signingHashAlgorithms:
+    - sha256
+  sign: ./scripts/sign.js
+  artifactName: "AdvanceSafe-Setup-${version}.exe"
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: false
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  createDesktopShortcut: ask
+  createStartMenuShortcut: true
+  shortcutName: AdvanceSafe
+  runAfterFinish: true
+  perMachine: true
+  license: build/LICENSE.txt
+  include: build/nsis/installer-script.nsi
+
+publish:
+  provider: github
+  owner: advancedsos-max
+  repo: advancesafe-releases
